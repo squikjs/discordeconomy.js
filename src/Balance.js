@@ -37,18 +37,26 @@ class Balance {
         return balance;
     };
 
-    leaderboard = (client, Limit) => {
-        if (!client) throw new SyntaxError(`${chalk.yellow`<client>`} (which is the ${chalk.blue`Discord.Client()`}) should be given!`);
-
+    leaderboard = (Limit) => {
         let limit;
         if (!Limit) limit = 10;
 
         const lb = db.all()
-            .filter(user => client.users.cache.has(user.ID))
             .sort((a, b) => b.data.balance - a.data.balance)
-            .map((user, position) => `#${position + 1} **${client.users.cache.get(user.ID).tag}**: ${user.data.balance} coins`)
+            .map((user, position) => `#${position + 1} <@!${user.ID}>: ${user.data.balance} coins`)
         return lb.slice(0, limit);    
 
+    };
+
+    has = (id, Min) => {
+        if (!id) throw new Error('ID has to be specified!');
+        if (!Min) throw new Error('Minium value has to be specified, followed by the ID!');
+
+        let min = parseInt(Min);
+        if(isNaN(min) || min <= 0) throw new Error('Minium value van only be a integer greater than 0!');
+
+        if(db.get(`${id}.balance`) >= min) return true;
+        else return false;
     };
 };
 
