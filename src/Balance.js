@@ -110,14 +110,17 @@ class Balance {
      * @param {*} id ID of user to add or subtract the coins
      * @param {*} Amount Amount of coins to slots
      */
-    slots = (id, Amount) => {
-        if (!id || !Amount) throw new Error(`ID and AMOUNT have to be given!`);
+    slots = (id, Amount, items) => {
+        if (!id || !Amount || !items) throw new Error(`ID, AMOUNT and ITEMS(in array) have to be given!`);
 
         let amount = parseInt(Amount);
         if (isNaN(amount)) throw new Error('AMOUNT should only be a number!');
         if (amount <= 0) warn('SLOTS Amount is put as negative!');
 
-        let slots = ["🍎", "🍌", "🍿", "🍨", "🍇"];
+        // if(!items.isArray()) throw new TypeError('Items can only be an array!');
+
+        // let slots = ["🍎", "🍌", "🍿", "🍨", "🍇"];
+        let slots = Array.from(items);
         const result1 = slots[Math.floor((Math.random() * slots.length))];
         const result2 = slots[Math.floor((Math.random() * slots.length))];
         const result3 = slots[Math.floor((Math.random() * slots.length))];

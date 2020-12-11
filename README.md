@@ -4,3 +4,18 @@
 ### Want to make a economy bot with Discord?
 #### We have your back! This package will allow you to make your first economy discord bot!
 # Installation
+Just run this command in your console!
+
+⚠️ Warning ⚠️- This package uses `quick.db`.
+```
+npm install discordeconomy.js
+```
+# Working
+## Importing the package
+```js
+const DiscordEconomy = require('discordeconomy.js');
+
+let balance = new DiscordEconomy.Balance();
+
+
+```
