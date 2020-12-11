@@ -1,5 +1,6 @@
 const eco = require('./index.js');
 const bal = new eco.Balance();
+const gem = new eco.Item('gem');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const prefix = '!';
@@ -38,6 +39,24 @@ client.on('message', message => {
         user = message.mentions.users.first().id;
 
         bal.transfer({from: message.author.id, to: user, amount: amount})
+    }
+    else if (command === 'cf'){
+        const cf = bal.coinflip(message.author.id, parseInt(args[0]), args[1]);
+        message.reply(`You ${cf.result}! It was ${cf.coin}`)
+    }
+    else if (command === 'gemw'){
+        gem.add(message.author.id, 100)
+    }
+    else if (command === 'gemg'){
+        message.reply(`You have ${gem.fetch(message.author.id)}`)
+    }
+    else if (command === 'gemt'){
+        gem.transfer({from: message.author.id, amount: 100, to: '770282838275653633'})
+    }
+    else if (command === 'gemlb'){
+        let embed = new Discord.MessageEmbed()
+        .setDescription(gem.leaderboard(10).join('\n'))
+        message.channel.send(embed);
     }
 
 });

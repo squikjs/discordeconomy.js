@@ -139,7 +139,38 @@ class Balance {
         return {result: result, amount: AddAmount, board: result1 + result2 + result3, win_multiplier: winMultiplier};
     };
 
-    
+    /**
+     * 
+     * @param {*} id ID of user to add or subtract the coins
+     * @param {*} Amount Amount of coins to slots
+     * @param {*} HeadOrTail The user said haid or tail
+     */
+    coinflip = (id, Amount, HeadOrTail) => {
+        if (!id || !Amount) throw new Error(`ID and AMOUNT have to be given!`);
+
+        let amount = parseInt(Amount);
+        if (isNaN(amount)) throw new Error('AMOUNT should only be a number!');
+        if (amount <= 0) warn('SLOTS Amount is put as negative!');
+
+        if(HeadOrTail !== 'head' && HeadOrTail !== 'tail') throw new Error('3rd paramter can only be a head or tail!')
+
+        const cfr = cfR();
+        let result = '';
+        if(HeadOrTail === cfr) result = 'win';
+        else result = 'lose';
+
+        if(result === 'win') db.add(`${id}.balance`, amount);
+        else db.add(`${id}.balance`, -amount);
+        
+        return { result: result, coin: cfr };
+    };
+
 };
 
 module.exports = Balance;
+
+function cfR(){
+    const cfr = Math.floor(Math.random() * 2) + 1;
+    if (cfr === 1) return 'head';
+    else return 'tail';
+}

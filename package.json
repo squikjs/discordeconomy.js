@@ -1,7 +1,7 @@
 {
   "name": "discordeconomy.js",
   "version": "1.0.0",
-  "description": "",
+  "description": "A discord economy package (wrapper around quick.db)!",
   "main": "index.js",
   "dependencies": {
     "chalk": "^4.1.0",
