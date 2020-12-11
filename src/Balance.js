@@ -109,6 +109,7 @@ class Balance {
      * 
      * @param {*} id ID of user to add or subtract the coins
      * @param {*} Amount Amount of coins to slots
+     * @param {*} items Array of items
      */
     slots = (id, Amount, items) => {
         if (!id || !Amount || !items) throw new Error(`ID, AMOUNT and ITEMS(in array) have to be given!`);

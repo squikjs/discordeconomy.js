@@ -1,5 +1,5 @@
 //import the package
-const DiscordEconomy = require('./index.js');
+const DiscordEconomy = require('discordeconomy.js');
 
 //discord.js setup
 const { Client, MessageEmbed } = require('discord.js');
