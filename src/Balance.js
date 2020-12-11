@@ -47,7 +47,7 @@ class Balance {
         if (!id) throw new Error('ID has to be specified!');
 
         let balance = db.get(`${id}.balance`);
-        if (balance === undefined || balance === null) warn(`Fetched balance is ${balance}!`);
+        if (balance === undefined || balance === null) balance = 0;
 
         return balance;
     };
@@ -89,7 +89,11 @@ class Balance {
         else return false;
     };
 
-    transfer = (params) => {
+    /**
+     * 
+     * @param {*} params {from: iD, to: ID, amount: AmountofCoinsToTransfer}
+     */
+    transfer = async (params) => {
         if (!params) throw new SyntaxError(`Parameters are to be given!\n${chalk.yellow`Example`} - transfer({from: ID, to: ID, amount: AMOUNTtotransfer})`);
 
         if(!params.from  || !params.to || !params.amount) throw new SyntaxError(`Parameters are to be given!\n${chalk.yellow`Example`} - transfer({from: ID, to: ID, amount: AMOUNTtotransfer})`)
@@ -97,9 +101,45 @@ class Balance {
         let Amount = parseInt(params.amount);
         if(isNaN(Amount) || Amount <= 0) throw new TypeError('Amount must be a integer greater than 0!');
 
-        db.add(`${params.from}.balance`, -Amount);
-        db.add(`${params.to}.balance`, Amount);
+        await db.add(`${params.from}.balance`, -Amount);
+        await db.add(`${params.to}.balance`, Amount);
     };
+
+    /**
+     * 
+     * @param {*} id ID of user to add or subtract the coins
+     * @param {*} Amount Amount of coins to slots
+     */
+    slots = (id, Amount) => {
+        if (!id || !Amount) throw new Error(`ID and AMOUNT have to be given!`);
+
+        let amount = parseInt(Amount);
+        if (isNaN(amount)) throw new Error('AMOUNT should only be a number!');
+        if (amount <= 0) warn('SLOTS Amount is put as negative!');
+
+        let slots = ["🍎", "🍌", "🍿", "🍨", "🍇"];
+        const result1 = slots[Math.floor((Math.random() * slots.length))];
+        const result2 = slots[Math.floor((Math.random() * slots.length))];
+        const result3 = slots[Math.floor((Math.random() * slots.length))];
+
+        let result = '';
+        let winMultiplier = '';
+        let AddAmount = 0;
+
+
+        if((result1 === result2 && result1 !== result3) || (result1 === result3 && result2 !== result3) || (result2 === result3 && result1 !== result2)) result = 'win', winMultiplier = '*1';
+        else if(result1 === result2 && result1 === result3) result = 'win', winMultiplier = '*2';
+        else result = 'lose';
+
+        if (result === 'win')  AddAmount = eval(`${amount}${winMultiplier}`);
+        else AddAmount = -amount;
+
+        db.add(`${id}.balance`, AddAmount);
+
+        return {result: result, amount: AddAmount, board: result1 + result2 + result3, win_multiplier: winMultiplier};
+    };
+
+    
 };
 
 module.exports = Balance;
