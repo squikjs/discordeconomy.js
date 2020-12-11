@@ -8,6 +8,11 @@ const error = require('./errors/Error');
 class Balance {
     constructor() {}
 
+    /**
+     * 
+     * @param {*} id ID of the user to add the coins to
+     * @param {*} amountInitial Amount of coins to add
+     */
     add = async (id, amountInitial) => {
         if (!id || !amountInitial) throw new Error(`ID and AMOUNT have to be given!`);
 
@@ -18,6 +23,11 @@ class Balance {
         await db.add(`${id}.balance`, amount);
     };
 
+    /**
+     * 
+     * @param {*} id ID of the user to subtract coins from
+     * @param {*} amountInitial Amount of coins to subtract from
+     */
     subtract = async (id, amountInitial) => {
         if (!id || !amountInitial) throw new Error(`ID and AMOUNT have to be given!`);
 
@@ -28,6 +38,11 @@ class Balance {
         await db.add(`${id}.balance`, -amount);
     };
 
+    /**
+     * 
+     * @param {*} id ID of user to fetch the balance from
+     * @return {integer} Amount of balance of the user
+     */
     fetch = (id) => {
         if (!id) throw new Error('ID has to be specified!');
 
@@ -37,9 +52,18 @@ class Balance {
         return balance;
     };
 
+    /**
+     * 
+     * @param {OPTIONAL} Limit the limit of users to display the leaderboard
+     * @return {array} Array of top users
+     */
     leaderboard = (Limit) => {
-        let limit;
+        let limit = 0;
+
         if (!Limit) limit = 10;
+        else limit = parseInt(Limit);
+
+        if(limit <= 0 || isNaN(limit)) throw new Error('Limit must be an integer greater than 0!');
 
         const lb = db.all()
             .sort((a, b) => b.data.balance - a.data.balance)
@@ -48,6 +72,12 @@ class Balance {
 
     };
 
+    /**
+     * 
+     * @param {*} id ID of user to check the balance
+     * @param {*} Min Amount of coins to check for
+     * @return {boolean} true/false
+     */
     has = (id, Min) => {
         if (!id) throw new Error('ID has to be specified!');
         if (!Min) throw new Error('Minium value has to be specified, followed by the ID!');
@@ -57,6 +87,18 @@ class Balance {
 
         if(db.get(`${id}.balance`) >= min) return true;
         else return false;
+    };
+
+    transfer = (params) => {
+        if (!params) throw new SyntaxError(`Parameters are to be given!\n${chalk.yellow`Example`} - transfer({from: ID, to: ID, amount: AMOUNTtotransfer})`);
+
+        if(!params.from  || !params.to || !params.amount) throw new SyntaxError(`Parameters are to be given!\n${chalk.yellow`Example`} - transfer({from: ID, to: ID, amount: AMOUNTtotransfer})`)
+
+        let Amount = parseInt(params.amount);
+        if(isNaN(Amount) || Amount <= 0) throw new TypeError('Amount must be a integer greater than 0!');
+
+        db.add(`${params.from}.balance`, -Amount);
+        db.add(`${params.to}.balance`, Amount);
     };
 };
 
