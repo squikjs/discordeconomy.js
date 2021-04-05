@@ -1,8 +1,6 @@
-const db = require("quick.db");
-const chalk = require("chalk");
-const warn = require("./Warn");
+const { DataBaseClient } = require("./DataBaseInterface");
 
-class Item {
+class Balance {
   constructor(item) {
     if (!item)
       throw new Error("Item must be specified! Example - new Item('gem');");
@@ -11,117 +9,129 @@ class Item {
 
   /**
    *
-   * @param {String} id ID of the user to add the items to
-   * @param {Number} amountInitial Amount of items to add
+   * @param {String} id
+   * @param {Number} amount
    */
-  add = async (id, amountInitial) => {
-    if (!id || !amountInitial)
+  add = async (id, amount) => {
+    if (!id || !amount) {
       throw new Error(`ID and AMOUNT have to be given!`);
+    }
 
-    let amount = parseInt(amountInitial);
-    if (isNaN(amount)) throw new Error("AMOUNT should only be a number!");
-    if (amount <= 0) warn("ADD AMOUNT is put as less than or equal to 0!");
+    if (Number.isNaN(Number(amount))) {
+      throw new Error("AMOUNT should only be a number!");
+    }
 
-    await db.add(`${id}.${this.item}`, amount);
+    const db = new DataBaseClient(id, this.item);
+    db.add(amount);
   };
 
   /**
    *
-   * @param {*} id ID of the user to subtract item from
-   * @param {*} amountInitial Amount of items to subtract
+   * @param {String} id
+   * @param {Number} amount
    */
-  subtract = async (id, amountInitial) => {
-    if (!id || !amountInitial)
+  subtract = async (id, amount) => {
+    if (!id || !amount) {
       throw new Error(`ID and AMOUNT have to be given!`);
+    }
 
-    let amount = parseInt(amountInitial);
-    if (isNaN(amount)) throw new Error("AMOUNT should only be a number!");
-    if (amount >= 0) warn("SUBRACT AMOUNT is put as more than or equal to 0!");
+    if (Number.isNaN(Number(amount))) {
+      throw new Error("AMOUNT should only be a number!");
+    }
 
-    await db.add(`${id}.${this.item}`, -amount);
+    const db = new DataBaseClient(id, this.item);
+    db.subtract(amount);
   };
 
   /**
    *
-   * @param {*} id ID of user to fetch the items from
-   * @return {integer} Amount of items of the user
+   * @param {String} id
+   * @return {Number}
    */
   fetch = (id) => {
-    if (!id) throw new Error("ID has to be specified!");
+    if (!id) throw new Error("ID has to be given!");
 
-    let items = db.get(`${id}.${this.item}`);
-    if (items === undefined || items === null) items = 0;
+    const db = new DataBaseClient(id, this.item);
+    return db.fetch();
+  };
 
-    return items;
+  /**
+   * @param {Function} callback
+   * @return {Array}
+   */
+  leaderboard = (callback) => {
+    const db = new DataBaseClient(null, this.item);
+    return db.leaderboard(callback);
   };
 
   /**
    *
-   * @param {OPTIONAL} Limit the limit of users to display the leaderboard
-   * @return {array} Array of top users
+   * @param {*} id
+   * @param {*} amount
+   * @return {boolean}
    */
-  leaderboard = (Limit) => {
-    let limit = 0;
-
-    if (!Limit) limit = 10;
-    else limit = parseInt(Limit);
-
-    if (limit <= 0 || isNaN(limit))
-      throw new Error("Limit must be an integer greater than 0!");
-
-    const lb = db
-      .all()
-      .sort((a, b) => b.data[`${this.item}`] - a.data[`${this.item}`])
-      .map(
-        (user, position) =>
-          `#${position + 1} <@!${user.ID}>: ${user.data[`${this.item}`]} ${
-            this.item
-          }`
-      );
-    return lb.slice(0, limit);
-  };
-
-  /**
-   *
-   * @param {*} id ID of user to check the items
-   * @param {*} Min Amount of items to check for
-   * @return {boolean} true/false
-   */
-  has = (id, Min) => {
+  has = (id, amount) => {
     if (!id) throw new Error("ID has to be specified!");
-    if (!Min)
+    if (!amount)
       throw new Error("Minium value has to be specified, followed by the ID!");
+    if (Number.isNaN(Number(amount)) || Number(amount) < 0)
+      throw new Error(
+        "Minium value van only be a integer greater than or equal to 0!"
+      );
 
-    let min = parseInt(Min);
-    if (isNaN(min) || min <= 0)
-      throw new Error("Minium value van only be a integer greater than 0!");
-
-    if (db.get(`${id}.${this.item}`) >= min) return true;
-    else return false;
+    const db = new DataBaseClient(id, this.item);
+    return db.has(amount);
   };
 
   /**
    *
-   * @param {*} params {from: iD, to: ID, amount: AmountofItemsToTransfer}
+   * @param {Object} params
    */
   transfer = async (params) => {
-    if (!params)
+    if (!params || !params.from || !params.to || !params.amount)
       throw new SyntaxError(
-        `Parameters are to be given!\n${chalk.yellow`Example`} - transfer({from: ID, to: ID, amount: AMOUNTtotransfer})`
+        `Parameters are to be given!\nExample - transfer({ from: ID, to: ID, amount: AMOUNT })`
       );
 
-    if (!params.from || !params.to || !params.amount)
-      throw new SyntaxError(
-        `Parameters are to be given!\n${chalk.yellow`Example`} - transfer({from: ID, to: ID, amount: AMOUNTtotransfer})`
-      );
-
-    let Amount = parseInt(params.amount);
-    if (isNaN(Amount) || Amount <= 0)
+    const amount = Number(params.amount);
+    if (Number.isNaN(amount) || amount <= 0)
       throw new TypeError("Amount must be a integer greater than 0!");
 
-    await db.add(`${params.from}.${this.item}`, -Amount);
-    await db.add(`${params.to}.${this.item}`, Amount);
+    const db = new DataBaseClient(params.from, this.item);
+    db.transfer(params.to, amount);
+  };
+
+  /**
+   *
+   * @param {String} id
+   * @param {Number} amount
+   * @param {Array} items
+   * @param {Number} num
+   * @param {Boolean} autoDataBaseHandling [ OPTIONAL ]
+   */
+  slots = (id, amount, items, num) => {
+    if (!id || !amount || !items || !num)
+      throw new TypeError(`ID, AMOUNT, NUM and ITEMS have to be given!`);
+
+    amount = typeof Number(amount) === "number" ? Number(amount) : 0;
+    id = `${id}`;
+
+    const db = new DataBaseClient(id, this.item);
+    return db.slots(amount, items, num);
+  };
+
+  /**
+   *
+   * @param {*} id ID of user to add or subtract the coins
+   * @param {*} amount Amount of coins to slots
+   * @param {*} choice The user said haid or tail
+   */
+  coinflip = (id, amount, choice) => {
+    if (!id || !amount) throw new Error(`ID and AMOUNT have to be given!`);
+
+    const db = new DataBaseClient(id, this.item);
+    return db.coinflip(amount, choice);
   };
 }
 
-module.exports = Item;
+module.exports = Balance;

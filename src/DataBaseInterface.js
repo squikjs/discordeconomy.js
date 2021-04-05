@@ -1,6 +1,6 @@
 const DB = require("quick.db");
 
-class DataBaseInterface {
+class DataBaseClient {
   constructor(id, item) {
     this.id = id;
     this.item = item;
@@ -29,17 +29,23 @@ class DataBaseInterface {
   }
 
   transfer(to, amount) {
+    if (!DB.get(`${to}.${this.item}`)) {
+      return;
+    }
+
     this.subtract(amount);
-    db.add(`${to}.${this.item}`, amount);
+    DB.add(`${to}.${this.item}`, amount);
   }
 
   leaderboard(callback) {
     return DB.all()
+      .filter((user) => user.data[this.item] !== undefined)
       .sort((a, b) => b.data[this.item] - a.data[this.item])
       .map((user, position) => {
         if (typeof callback === "function") {
           return callback(user.ID, user.data[this.item], position + 1);
         }
+
         return {
           id: user.ID,
           amount: user.data[this.item],
@@ -60,7 +66,7 @@ class DataBaseInterface {
 
     return {
       board: results,
-      win: results.every((result) => result === results[0]) ? true : false,
+      win: results.every((result) => result === results[0]),
     };
   }
 
@@ -81,12 +87,13 @@ class DataBaseInterface {
         if (botChoice === 1) this.add(amount);
         else this.subtract(amount);
         return { win: botChoice === 1, coin: stringBotChoice };
+
+      default:
+        throw new Error(
+          "Choice is not head (h or heads) or tail (t or tails)."
+        );
     }
   }
 }
 
-const db = new DataBaseInterface("1234", "balance");
-console.log(db.fetch());
-console.log(db.leaderboard());
-console.log(db.has(100));
-console.log(db.slots(10, ["*", "!", "@"], 2));
+module.exports = { DataBaseClient };
