@@ -5,7 +5,7 @@ const DiscordEconomy = require("./index");
 const { Client, MessageEmbed } = require("discord.js");
 const client = new Client();
 const prefix = "!"; // your bot prefix
-const token = "ODIyMDEzNTgyNTU1MjE3OTIw.YFMFzg.cIgGdk8na1TWunWW79nb8OwPLRU"; // your bot token
+const token = "super-secret-token"; // your bot token
 
 // for balance commands
 let balance = new DiscordEconomy.Balance();

@@ -19,11 +19,12 @@
   "keywords": [
     "discord.js",
     "currency",
-    "economy discord.js",
-    "discord.js economy",
-    "discord.js currency",
-    "discord.js game",
-    "discord"
+    "discord.js-eco",
+    "economy",
+    "discord-currency",
+    "discord-game",
+    "discord",
+    "eris"
   ],
   "author": "",
   "license": "ISC",
