@@ -4,7 +4,148 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Discordeconomy.js</title>
+        <link rel="icon" href="assets/icon.png">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="packages/highlightjs/atom-one-dark.min.css">
+        <script src="packages/highlightjs/highlight.min.js"></script>
+        <script src="packages/clipboardjs/clipboard.min.js"></script>
+        <title>DiscordEconomy.js</title>
     </head>
-    <body></body>
+    <body>
+        <div id="header">
+            <img src="assets/logo.png" alt="DiscordEconomy.js" id="logo">
+            <h1>DiscordEconomy.js</h1>
+        </div>
+        <div id="subheader">
+            <h2>
+                Wanna make your first economy bot on Discord?
+            </h2>
+            <h2>We have your back!</h2>
+        </div>
+        <div id="random-word">
+            <h2></h2>
+            <h3></h3>
+        </div>
+        <div id="app">
+            <div class="getting-started">
+                <h2 id="heading">Getting Started</h2>
+                <div id="break"></div>
+                <div id="docs">
+                    <h3>Installation</h3>
+                    <p>
+                        Using
+                        <a id="block" href="https://www.npmjs.com/package/discordeconomy.js">npm</a>
+                    </p>
+                    <div class="code bash">
+                        npm install discordeconomy.js
+                    </div>
+                    <p>
+                        or using
+                        <a id="block" href="https://www.yarnpkg.com/package/discordeconomy.js">yarn</a>
+                    </p>
+                    <div class="code bash">
+                        yarn add discordeconomy.js
+                    </div>
+                    <h3>Import</h3>
+                    <div class="code javascript">
+                        const DiscordEconomy = require('discordeconomy.js');
+                        <br>
+                        const balance = new DiscordEconomy.Balance(); //  balance class
+                        <br>
+                        const item = new DiscordEconomy.Item("item_name"); // custom item class, replace "item_name" with your items name!
+                        <br>
+                    </div>
+                    <h3>Sample bot code</h3>
+                    <a href="https://github.com/squikjs/discordeconomy.js/blob/main/index.bot.js" id="block">Here</a>
+                </div>
+            </div>
+            <div class="usage">
+                <h2 id="heading">Usage</h2>
+                <div id="break"></div>
+                <div id="docs">
+                    <p style="font-size: xx-large; font-family: monospace;">
+                        Replace all
+                        <a id="block">&#60;class&gt;</a>
+                        with your class variable (ITEM or BALANCE)
+                    </p>
+                    <p>&nbsp;</p>
+                    <h3>Adding balance</h3>
+                    <div class="code javascript">
+                        &#60;class&gt;.add(id, amount);
+                    </div>
+                    <h3>Subtracting balance</h3>
+                    <div class="code javascript">
+                        &#60;class&gt;.subtract(id, amount);
+                    </div>
+                    <h3>Fetching balance</h3>
+                    <div class="code javascript">
+                        &#60;class&gt;.fetch(id);
+                    </div>
+                    <h3>Slots</h3>
+                    <p style="font-size: large;">
+                        The slots function takes in 4 arguments:
+                        <br>
+                        1.
+                        <a id="block">Id</a>
+                        id of user
+                        <br>
+                        2.
+                        <a id="block">Amount</a>
+                        amount to bet
+                        <br>
+                        3.
+                        <a id="block">Items</a>
+                        items is an array of all possible items in the slots board
+                        <br>
+                        4.
+                        <a id="block">Num</a>
+                        number of items on the resulting board
+                        <br>
+                        <br>
+                        It returns an object with a
+                        <a id="block">board</a>
+                        (array) property and a
+                        <a id="block">win</a>
+                        (boolean).
+                    </p>
+                    <div class="code javascript">
+                        &#60;class&gt;.slots(id, amount, items, num);
+                    </div>
+                    <h3>Coinflip</h3>
+                    <p style="font-size: large;">
+                        <a id="block">choice</a>
+                        is the argument which takes in users choice
+                        id of user (it can be "h" or "head" or "heads" or "t" or "tail" or "tails").
+                        <br>
+                        <br>
+                        It returns an object with a
+                        <a id="block">coin</a>
+                        (bot choice of coin) property and a
+                        <a id="block">win</a>
+                        (boolean).
+                    </p>
+                    <div class="code javascript">
+                        &#60;class&gt;.slots(id, amount, choice);
+                    </div>
+                    <h3>Leaderboard</h3>
+                    <p style="font-size: large;">
+                        <a id="block">choice</a>
+                        is the argument which takes in users choice
+                        id of user (it can be "h" or "head" or "heads" or "t" or "tail" or "tails").
+                        <br>
+                        <br>
+                        It returns an object with a
+                        <a id="block">coin</a>
+                        (bot choice of coin) property and a
+                        <a id="block">win</a>
+                        (boolean).
+                    </p>
+                    <div class="code javascript">
+                        &#60;class&gt;.slots(id, amount, choice);
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="script.js"></script>
+    </body>
 </html>
