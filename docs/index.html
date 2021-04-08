@@ -9,6 +9,11 @@
         <link rel="stylesheet" href="packages/highlightjs/atom-one-dark.min.css">
         <script src="packages/highlightjs/highlight.min.js"></script>
         <script src="packages/clipboardjs/clipboard.min.js"></script>
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="DiscordEconomy.js Documentation">
+        <meta property="og:title" content="DiscordEconomy.js Documentation">
+        <meta property="og:description" content="Wanna make a discord economy bot?\nWe have your back!\nNPM: https://www.npmjs.com/package/discordeconomy.js\nGithub: https://github.com/squikjs/discordeconomy.js">
+        <meta property="og:image" content="https://i.postimg.cc/9fQJwyf6/de-js-2-removebg-preview.png">
         <title>DiscordEconomy.js</title>
     </head>
     <body>
@@ -69,83 +74,94 @@
                         with your class variable (ITEM or BALANCE)
                     </p>
                     <p>&nbsp;</p>
-                    <h3>Adding balance</h3>
-                    <div class="code javascript">
-                        &#60;class&gt;.add(id, amount);
-                    </div>
-                    <h3>Subtracting balance</h3>
-                    <div class="code javascript">
-                        &#60;class&gt;.subtract(id, amount);
-                    </div>
-                    <h3>Fetching balance</h3>
-                    <div class="code javascript">
-                        &#60;class&gt;.fetch(id);
-                    </div>
-                    <h3>Slots</h3>
-                    <p style="font-size: large;">
-                        The slots function takes in 4 arguments:
-                        <br>
-                        1.
-                        <a id="block">Id</a>
-                        id of user
-                        <br>
-                        2.
-                        <a id="block">Amount</a>
-                        amount to bet
-                        <br>
-                        3.
-                        <a id="block">Items</a>
-                        items is an array of all possible items in the slots board
-                        <br>
-                        4.
-                        <a id="block">Num</a>
-                        number of items on the resulting board
-                        <br>
-                        <br>
-                        It returns an object with a
-                        <a id="block">board</a>
-                        (array) property and a
-                        <a id="block">win</a>
-                        (boolean).
-                    </p>
-                    <div class="code javascript">
-                        &#60;class&gt;.slots(id, amount, items, num);
-                    </div>
-                    <h3>Coinflip</h3>
-                    <p style="font-size: large;">
-                        <a id="block">choice</a>
-                        is the argument which takes in users choice
+                    <h3>
+                        Adding/h3>
+                        <div class="code javascript">
+                            &#60;class&gt;.add(id, amount);
+                        </div>
+                        <h3>Subtracting</h3>
+                        <div class="code javascript">
+                            &#60;class&gt;.subtract(id, amount);
+                        </div>
+                        <h3>Fetching</h3>
+                        <div class="code javascript">
+                            &#60;class&gt;.fetch(id);
+                        </div>
+                        <h3>Slots</h3>
+                        <p style="font-size: large;">
+                            The slots function takes in 4 arguments:
+                            <br>
+                            1.
+                            <a id="block">Id</a>
+                            id of user
+                            <br>
+                            2.
+                            <a id="block">Amount</a>
+                            amount to bet
+                            <br>
+                            3.
+                            <a id="block">Items</a>
+                            items is an array of all possible items in the slots board
+                            <br>
+                            4.
+                            <a id="block">Num</a>
+                            number of items on the resulting board
+                            <br>
+                            <br>
+                            It returns an object with a
+                            <a id="block">board</a>
+                            (array) property and a
+                            <a id="block">win</a>
+                            (boolean).
+                        </p>
+                        <div class="code javascript">
+                            &#60;class&gt;.slots(id, amount, items, num);
+                        </div>
+                        <h3>Coinflip</h3>
+                        <p style="font-size: large;">
+                            <a id="block">choice</a>
+                            is the argument which takes in users choice
                         id of user (it can be "h" or "head" or "heads" or "t" or "tail" or "tails").
-                        <br>
-                        <br>
-                        It returns an object with a
-                        <a id="block">coin</a>
-                        (bot choice of coin) property and a
-                        <a id="block">win</a>
-                        (boolean).
-                    </p>
-                    <div class="code javascript">
-                        &#60;class&gt;.slots(id, amount, choice);
-                    </div>
-                    <h3>Leaderboard</h3>
-                    <p style="font-size: large;">
-                        <a id="block">choice</a>
-                        is the argument which takes in users choice
-                        id of user (it can be "h" or "head" or "heads" or "t" or "tail" or "tails").
-                        <br>
-                        <br>
-                        It returns an object with a
-                        <a id="block">coin</a>
-                        (bot choice of coin) property and a
-                        <a id="block">win</a>
-                        (boolean).
-                    </p>
-                    <div class="code javascript">
-                        &#60;class&gt;.slots(id, amount, choice);
+                            <br>
+                            <br>
+                            It returns an object with a
+                            <a id="block">coin</a>
+                            (bot choice of coin) property and a
+                            <a id="block">win</a>
+                            (boolean).
+                        </p>
+                        <div class="code javascript">
+                            &#60;class&gt;.slots(id, amount, choice);
+                        </div>
+                        <h3>Leaderboard</h3>
+                        <p style="font-size: large;">
+                            This will return an array of the leaderboard.
+                        </p>
+                        <div class="code javascript">
+                            &#60;class&gt;.leaderboard((id, amount, position) => `No. **${position}**: &#60;@!${id}&#62; (${amount})`);
+                        </div>
+                        <h3>Has</h3>
+                        <p style="font-size: large;">
+                            This will return a boolean value depending on if the user has amount of coins or not.
+                        </p>
+                        <div class="code javascript">
+                            &#60;class&gt;.has(id, amount);
+                        </div>
+                        <h3>Transfer</h3>
+                        <div class="code javascript">
+                            &#60;class&gt;.transfer({
+                            <br>
+                            &nbsp;&nbsp;from: id,
+                            <br>
+                            &nbsp;&nbsp;to: id,
+                            <br>
+                            &nbsp;&nbsp;amount: amount
+                            <br>
+                            });
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <script src="script.js"></script>
-    </body>
-</html>
+            <script src="script.js"></script>
+        </body>
+    </html>
