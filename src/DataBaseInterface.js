@@ -57,7 +57,7 @@ class DataBaseClient {
   slots(amount, items, num) {
     let random = () => items[Math.floor(Math.random() * items.length)];
     let results = new Array();
-    for (let i = 1; i <= (num ?? 3); i++) {
+    for (let i = 1; i <= (num ? num : 3); i++) {
       results.push(random());
     }
 
