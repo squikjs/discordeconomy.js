@@ -14,22 +14,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Wildwolf210/discordeconomy.js.git"
+    "url": "git+https://github.com/squikjs/discordeconomy.js.git"
   },
   "keywords": [
+    "discord",
     "discord.js",
     "currency",
-    "discord.js-eco",
     "economy",
-    "discord-currency",
-    "discord-game",
-    "discord",
     "eris"
   ],
   "author": "squikjs",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Wildwolf210/discordeconomy.js/issues"
+    "url": "https://github.com/squikjs/discordeconomy.js/issues"
   },
-  "homepage": "https://github.com/Wildwolf210/discordeconomy.js#readme"
+  "homepage": "https://github.com/squikjs/discordeconomy.js#readme"
 }
